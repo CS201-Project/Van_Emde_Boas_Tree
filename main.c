@@ -125,6 +125,64 @@ bool IsPresent(VEB_Node *root, int x){
 
 }
 
+// print
+void Print_Tree(VEB_Node* root , int t=0){
+    if (root){
+        for(int i=0 ; i<t ; i++){
+            printf("\t");
+        }
+        printf("Summary: %d ( %d , %d )\n",root->U_Size,root->Minimum,root->Maximum);
+        if (root->U_Size !=2 ){
+            Print_Tree(root->Summary,t+1);
+        }
+        if (root->U_Size !=2){
+            for (int i=0; i<=t ; i++){
+                printf("\t");
+            }
+            printf("Cluster: %d\n",root->U_Size);
+            int k = ceil(sqrt(root->U_size));
+            for (int i=0;i < k;i++){
+                Print_Tree(root->Cluster[i],t+1);
+            }
+        }
+      
+    }
+}
+
+// successor
+int Successor (VEB_Node* root , int x){
+    int k = ceil(sqrt(root->U_size));
+    int max_cluster = (root->Cluster[x/k])->Maximum;
+    if (root->U_Size==2){
+        if (x==0 && root->Maximum==1){
+            return 1;
+        }
+        else {
+            return -1;
+        }
+    }
+    else if(root->Minimum != -1 && x < root->Minimum){
+        return root->Minimum;
+    }
+    else {
+        if (max_cluster != -1 && x%k < max_cluster){
+            int temp=Successor(root->Cluster[x/k],x%k);
+            return (temp+(x/k)*k);
+        }
+        else {
+            int successor_cluster = Successor(root->Summary,x/k);
+            if (successor_cluster != -1){
+                int temp=(root->Cluster[x/k])->Minimum;
+                return (temp + successor_cluster*k);
+            }
+            else {
+                return -1;
+            }
+        } 
+
+    }
+}
+
 int main()
 {
     VEB_Node* akp = Initialize_Tree(4);
