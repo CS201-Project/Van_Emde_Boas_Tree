@@ -183,6 +183,49 @@ int Successor (VEB_Node* root , int x){
     }
 }
 
+//delete function
+VEB_Node *Delete_Element(VEB_Node *root, int x)
+{
+    int k = ceil(sqrt(root->U_Size));
+    if(root->Minimum == root->Maximum)
+    {
+        root->Minimum = -1;
+        root->Maximum = -1;
+    }
+    else if(root->U_Size == 2)
+    {
+        if(x==0)
+            root->Minimum = 1;
+        else root->Minimum = 0;
+
+        root->Maximum = root->Minimum;
+    }
+    else
+    {
+        if(x == root->Minimum)
+        {
+            int Cluster_One = (root->Summary)->Minimum;
+            x = Cluster_One*k + (root->Cluster[Cluster_One])->Minimum;
+            root->Minimum = x;
+        }
+        root->Cluster = Delete_Element(root->Cluster[x/k], x%k);
+        if((root->Cluster[x/k])->Minimum == -1)
+        {
+            root->Summary = Delete_Element(root->Summary,x/k);
+            if(x == root->Maximum)
+            {
+                int temp = (root->Summary)->Maximum ;
+                if(temp == -1)
+                    root->Maximum = root->Minimum;
+                else 
+                    root->Maximum = temp*k + + (root->Cluster[temp])->Maximum;
+            }
+        }
+        else if(x== root->Maximum)
+            root->Maximum = (x/k)*k + (root->Cluster[x/k])->Maximum;
+    }
+}
+
 int main()
 {
     VEB_Node* akp = Initialize_Tree(4);
