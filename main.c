@@ -127,8 +127,8 @@ bool IsPresent(VEB_Node *root, int x){
 
 // print
 void Print_Tree(VEB_Node* root , int t){
-    t = 0;
-    if(root){
+    t=0;
+    if (root){
         for(int i=0 ; i<t ; i++){
             printf("\t");
         }
@@ -184,49 +184,6 @@ int Successor (VEB_Node* root , int x){
     }
 }
 
-//Predecessor function
-int predecessor(VEB_Node* root, int x){
-    
-    int k = ceil(sqrt(root->U_size));
-    
-    if(root->U_size == 2){
-        if(x == 1 && root->Minimum == 0){
-            return 0;
-        }
-        else{
-            return -1;
-        }
-    }
-    else if(root->Maximum != -1 && x > root->Maximum){
-        return root->Maximum;
-    }
-
-    else{
-
-        int min_cluster = (root->Clusters[x/k])->Minimum;
-        if(min_cluster != -1 && x%k > min_cluster){
-
-            int temp = predecessor(root->Clusters[x/k],x%k);
-            return (temp + (x/k)*k);
-        }
-        else{
-
-            int pr_cluster = predecessor(root->Summary, x/k);
-            if(pr_cluster == -1){
-                return -1;
-            }
-            else{
-                
-                int temp = (root->Clusters[pr_cluster])->Maximum;
-                return (temp + (pr_cluster*k));
-
-            }
-
-        }
-
-    }
-}
-
 //delete function
 VEB_Node *Delete_Element(VEB_Node *root, int x)
 {
@@ -267,6 +224,69 @@ VEB_Node *Delete_Element(VEB_Node *root, int x)
         }
         else if(x== root->Maximum)
             root->Maximum = (x/k)*k + (root->Clusters[x/k])->Maximum;
+    }
+}
+
+int main()
+{
+    int n;
+    printf("Enter the size of array");
+    scanf("%d",&n);
+    VEB_Node *tree = Initialize_Tree(n);
+    printf("Enter %d values:",n);
+    for (int i=0; i<n; i++){
+        int node_val;
+        scanf("%d",&node_val);
+        if(i==0){
+            Insert_In_Empty(tree,node_val);
+        }
+        else{
+            Insert(tree,node_val);
+        }
+
+    }
+    while (1){
+        char ch;
+        printf("Enter A to search an element\nEnter B to find predesessor of element\nEnter C to find successror of element\nEnter D to delete an element\nEnter E to display the tree\nEnter F to exit\n");
+        scanf("%c",&ch);
+        if(ch =='A'){
+          int val;
+          scanf("%d",&val);
+          if (IsPresent(tree,val)){
+              printf("Present\n");
+          }
+          else {
+              printf("Not Present\n");
+          }
+        }
+        else if(ch =='B'){
+          int val;
+          scanf("%d",&val);
+          //
+        }
+        else if(ch =='C'){
+          int val;
+          scanf("%d",&val);
+          if(Successor(root,val)!=-1){
+              int succ = Successor(root,val);
+              printf("Successfor of %d is %d\n",val,succ);
+          }
+          else {
+              printf("No successor");
+          }
+        }
+        else if(ch =='D'){
+          int val;
+          scanf("%d",&val);]
+          Delete_Element(tree,val);
+        }
+        else if(ch =='E') {
+         Print_Tree(tree);
+        }
+        else {
+            break;
+        }
+
     }
 }
 
