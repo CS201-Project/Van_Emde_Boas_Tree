@@ -124,7 +124,7 @@ bool IsPresent(VEB_Node *root, int x)
 {
     if (x >= root->U_size || x < 0)
     {
-        printf("Query is Out of Bounds");
+        printf("Query is Out of Bounds\n");
         return false;
     }
     if (root->Maximum == x || root->Minimum == x)
@@ -237,18 +237,23 @@ int Predecessor(VEB_Node *root, int x)
 
     else
     {
-        int min_cluster = (root->Clusters[x / k])->Minimum;
-        if (min_cluster != -1 && x % k > min_cluster)
+        int min_cluster = (root->Clusters[x/k])->Minimum;
+        if (min_cluster != -1 && x%k > min_cluster)
         {
-            int temp = Predecessor(root->Clusters[x / k], x % k);
+            int temp = Predecessor(root->Clusters[x/k], x%k);
             return (temp + (x / k) * k);
         }
         else
         {
-            int pr_cluster = Predecessor(root->Summary, x / k);
+            int pr_cluster = Predecessor(root->Summary, x/k);
             if (pr_cluster == -1)
-            {
-                return -1;
+            {   
+                if(root->Minimum != -1 && x > root->Minimum){
+                    return root->Minimum;
+                }
+                else{
+                    return -1;
+                }
             }
             else
             {
@@ -349,7 +354,7 @@ int main()
             }
             else
             {
-                printf("No predecessor");
+                printf("No predecessor\n");
             }
         }
         else if (ch == 'C')
