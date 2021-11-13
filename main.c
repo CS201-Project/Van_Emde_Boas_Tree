@@ -132,17 +132,17 @@ void Print_Tree(VEB_Node* root , int t=0){
             printf("\t");
         }
         printf("Summary: %d ( %d , %d )\n",root->U_Size,root->Minimum,root->Maximum);
-        if (root->U_Size !=2 ){
+        if (root->U_size !=2 ){
             Print_Tree(root->Summary,t+1);
         }
-        if (root->U_Size !=2){
+        if (root->U_size !=2){
             for (int i=0; i<=t ; i++){
                 printf("\t");
             }
-            printf("Cluster: %d\n",root->U_Size);
+            printf("Cluster: %d\n",root->U_size);
             int k = ceil(sqrt(root->U_size));
             for (int i=0;i < k;i++){
-                Print_Tree(root->Cluster[i],t+1);
+                Print_Tree(root->Clusters[i],t+1);
             }
         }
       
@@ -152,8 +152,8 @@ void Print_Tree(VEB_Node* root , int t=0){
 // successor
 int Successor (VEB_Node* root , int x){
     int k = ceil(sqrt(root->U_size));
-    int max_cluster = (root->Cluster[x/k])->Maximum;
-    if (root->U_Size==2){
+    int max_cluster = (root->Clusters[x/k])->Maximum;
+    if (root->U_size==2){
         if (x==0 && root->Maximum==1){
             return 1;
         }
@@ -166,19 +166,61 @@ int Successor (VEB_Node* root , int x){
     }
     else {
         if (max_cluster != -1 && x%k < max_cluster){
-            int temp=Successor(root->Cluster[x/k],x%k);
+            int temp=Successor(root->Clusters[x/k],x%k);
             return (temp+(x/k)*k);
         }
         else {
             int successor_cluster = Successor(root->Summary,x/k);
             if (successor_cluster != -1){
-                int temp=(root->Cluster[x/k])->Minimum;
+                int temp=(root->Clusters[x/k])->Minimum;
                 return (temp + successor_cluster*k);
             }
             else {
                 return -1;
             }
         } 
+
+    }
+}
+//Predecessor function
+int predecessor(VEB_Node* root, int x){
+    
+    int k = ceil(sqrt(root->U_size));
+    
+    if(root->U_size == 2){
+        if(x == 1 && root->Minimum == 0){
+            return 0;
+        }
+        else{
+            return -1;
+        }
+    }
+    else if(root->Maximum != -1 && x > root->Maximum){
+        return root->Maximum;
+    }
+
+    else{
+
+        int min_cluster = (root->Clusters[x/k])->Minimum;
+        if(min_cluster != -1 && x%k > min_cluster){
+
+            int temp = predecessor(root->Clusters[x/k],x%k);
+            return (temp + (x/k)*k);
+        }
+        else{
+
+            int pr_cluster = predecessor(root->Summary, x/k);
+            if(pr_cluster == -1){
+                return -1;
+            }
+            else{
+                
+                int temp = (root->Clusters[pr_cluster])->Maximum;
+                return (temp + (pr_cluster*k));
+
+            }
+
+        }
 
     }
 }
@@ -205,11 +247,11 @@ VEB_Node *Delete_Element(VEB_Node *root, int x)
         if(x == root->Minimum)
         {
             int Cluster_One = (root->Summary)->Minimum;
-            x = Cluster_One*k + (root->Cluster[Cluster_One])->Minimum;
+            x = Cluster_One*k + (root->Clusters[Cluster_One])->Minimum;
             root->Minimum = x;
         }
-        root->Cluster = Delete_Element(root->Cluster[x/k], x%k);
-        if((root->Cluster[x/k])->Minimum == -1)
+        root->Clusters = Delete_Element(root->Clusters[x/k], x%k);
+        if((root->Clusters[x/k])->Minimum == -1)
         {
             root->Summary = Delete_Element(root->Summary,x/k);
             if(x == root->Maximum)
@@ -218,11 +260,11 @@ VEB_Node *Delete_Element(VEB_Node *root, int x)
                 if(temp == -1)
                     root->Maximum = root->Minimum;
                 else 
-                    root->Maximum = temp*k + + (root->Cluster[temp])->Maximum;
+                    root->Maximum = temp*k + + (root->Clusters[temp])->Maximum;
             }
         }
         else if(x== root->Maximum)
-            root->Maximum = (x/k)*k + (root->Cluster[x/k])->Maximum;
+            root->Maximum = (x/k)*k + (root->Clusters[x/k])->Maximum;
     }
 }
 
