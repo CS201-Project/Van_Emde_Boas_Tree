@@ -183,6 +183,48 @@ int Successor (VEB_Node* root , int x){
 
     }
 }
+//Predecessor function
+int predecessor(VEB_Node* root, int x){
+    
+    int k = ceil(sqrt(root->U_size));
+    
+    if(root->U_size == 2){
+        if(x == 1 && root->Minimum == 0){
+            return 0;
+        }
+        else{
+            return -1;
+        }
+    }
+    else if(root->Maximum != -1 && x > root->Maximum){
+        return root->Maximum;
+    }
+
+    else{
+
+        int min_cluster = (root->Clusters[x/k])->Minimum;
+        if(min_cluster != -1 && x%k > min_cluster){
+
+            int temp = predecessor(root->Clusters[x/k],x%k);
+            return (temp + (x/k)*k);
+        }
+        else{
+
+            int pr_cluster = predecessor(root->Summary, x/k);
+            if(pr_cluster == -1){
+                return -1;
+            }
+            else{
+                
+                int temp = (root->Clusters[pr_cluster])->Maximum;
+                return (temp + (pr_cluster*k));
+
+            }
+
+        }
+
+    }
+}
 
 //Predecessor function
 int predecessor(VEB_Node* root, int x){
