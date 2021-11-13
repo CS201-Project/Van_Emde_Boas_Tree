@@ -43,6 +43,7 @@ int Gen_Index(int a, int b, int U_Size)
     return a*mul + b;
 }
 
+//Initialize an empty array
 VEB_Node *Initialize_Tree(int Node_Size)
 {
     VEB_Node *ptr=(VEB_Node *)malloc(sizeof(VEB_Node));
@@ -76,7 +77,7 @@ VEB_Node *Initialize_Tree(int Node_Size)
     return ptr;
 }
 
-//insert function 
+//insert helper function 
 VEB_Node* Insert_In_Empty(VEB_Node* root, int x){
 
     root->Minimum  =  x;
@@ -85,6 +86,7 @@ VEB_Node* Insert_In_Empty(VEB_Node* root, int x){
 
 }
 
+//Insert Function
 VEB_Node* Insert(VEB_Node* root, int x){
     
     if(root->Minimum  ==  -1){
@@ -111,6 +113,7 @@ VEB_Node* Insert(VEB_Node* root, int x){
     return root;
 }
 
+//Ispresent function
 bool IsPresent(VEB_Node *root, int x){
     
     if(root->Maximum == x || root->Minimum == x){
@@ -180,48 +183,6 @@ int Successor (VEB_Node* root , int x){
                 return -1;
             }
         } 
-
-    }
-}
-//Predecessor function
-int predecessor(VEB_Node* root, int x){
-    
-    int k = ceil(sqrt(root->U_size));
-    
-    if(root->U_size == 2){
-        if(x == 1 && root->Minimum == 0){
-            return 0;
-        }
-        else{
-            return -1;
-        }
-    }
-    else if(root->Maximum != -1 && x > root->Maximum){
-        return root->Maximum;
-    }
-
-    else{
-
-        int min_cluster = (root->Clusters[x/k])->Minimum;
-        if(min_cluster != -1 && x%k > min_cluster){
-
-            int temp = predecessor(root->Clusters[x/k],x%k);
-            return (temp + (x/k)*k);
-        }
-        else{
-
-            int pr_cluster = predecessor(root->Summary, x/k);
-            if(pr_cluster == -1){
-                return -1;
-            }
-            else{
-                
-                int temp = (root->Clusters[pr_cluster])->Maximum;
-                return (temp + (pr_cluster*k));
-
-            }
-
-        }
 
     }
 }
@@ -374,8 +335,3 @@ int main()
 
     }
 }
-
-
-
-
-
