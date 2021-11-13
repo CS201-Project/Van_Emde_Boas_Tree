@@ -228,10 +228,65 @@ VEB_Node *Delete_Element(VEB_Node *root, int x)
 
 int main()
 {
-    VEB_Node* akp = Initialize_Tree(4);
-    printf("%d\n",Cluster_Index(2,akp->U_size));
-    printf("%d\n",Pos_In_Cluster(2,akp->U_size));
-    return 0;
+    int n;
+    printf("Enter the size of array");
+    scanf("%d",&n);
+    VEB_Node *tree = Initialize_Tree(n);
+    printf("Enter %d values:",n);
+    for (int i=0; i<n; i++){
+        int node_val;
+        scanf("%d",&node_val);
+        if(i==0){
+            Insert_In_Empty(tree,node_val);
+        }
+        else{
+            Insert(tree,node_val);
+        }
+
+    }
+    while (1){
+        char ch;
+        printf("Enter A to search an element\nEnter B to find predesessor of element\nEnter C to find successror of element\nEnter D to delete an element\nEnter E to display the tree\nEnter F to exit\n");
+        scanf("%c",&ch);
+        if(ch =='A'){
+          int val;
+          scanf("%d",&val);
+          if (IsPresent(tree,val)){
+              printf("Present\n");
+          }
+          else {
+              printf("Not Present\n");
+          }
+        }
+        else if(ch =='B'){
+          int val;
+          scanf("%d",&val);
+          //
+        }
+        else if(ch =='C'){
+          int val;
+          scanf("%d",&val);
+          if(Successor(root,val)!=-1){
+              int succ = Successor(root,val);
+              printf("Successfor of %d is %d\n",val,succ);
+          }
+          else {
+              printf("No successor");
+          }
+        }
+        else if(ch =='D'){
+          int val;
+          scanf("%d",&val);]
+          Delete_Element(tree,val);
+        }
+        else if(ch =='E') {
+         Print_Tree(tree);
+        }
+        else {
+            break;
+        }
+
+    }
 }
 
 
