@@ -25,24 +25,6 @@ struct VEB_Node
 
 typedef struct VEB_Node VEB_Node;
 
-int Cluster_Index(int key, int U_Size)
-{
-    int divi = ceil(sqrt(U_Size));
-    return key / divi;
-}
-
-int Pos_In_Cluster(int key, int U_Size)
-{
-    int mod = ceil(sqrt(U_Size));
-    return key % mod;
-}
-
-int Gen_Index(int a, int b, int U_Size)
-{
-    int mul = ceil(sqrt(U_Size));
-    return a * mul + b;
-}
-
 // Initialize an empty array
 VEB_Node *Initialize_Tree(int Node_Size)
 {
