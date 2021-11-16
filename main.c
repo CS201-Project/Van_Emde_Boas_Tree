@@ -310,7 +310,7 @@ int main()
     while (1)
     {
         char ch;
-        printf("Enter A to search an element\nEnter B to find predesessor of element\nEnter C to find successor of element\nEnter D to delete an element\nEnter E to display the tree\nEnter F to exit\n");
+        printf("Enter A to search an element\nEnter B to find predesessor of element\nEnter C to find successor of element\nEnter D to delete an element\nEnter E to display the tree\nEnter F to get minimum\nEnter G to get maximum\nEnter H to exit\n");
         scanf(" %c", &ch);
         if (ch == 'A')
         {
@@ -350,7 +350,7 @@ int main()
             }
             else
             {
-                printf("No successor");
+                printf("No successor\n");
             }
         }
         else if (ch == 'D')
@@ -362,6 +362,12 @@ int main()
         else if (ch == 'E')
         {
             Print_Tree(tree, 0);
+        }
+        else if(ch == 'F'){
+             printf("Minimum element is %d\n",tree->Minimum);
+        }
+        else if(ch == 'G'){
+            printf("Maximum element is %d\n",tree->Maximum);
         }
         else
         {
