@@ -70,6 +70,11 @@ VEB_Node *Insert_In_Empty(VEB_Node *root, int x)
 // Insert Function
 VEB_Node *Insert(VEB_Node *root, int x)
 {
+    if(x<0 || x>=root->U_size)
+    {
+        printf("Query out of bounds!!!\n");
+        return root;
+    }
     if (root->Minimum == -1)
     {
         root = Insert_In_Empty(root, x);
@@ -124,32 +129,16 @@ bool IsPresent(VEB_Node *root, int x)
 // Print
 void Print_Tree(VEB_Node *root, int t)
 {
-    t = 0;
     if (root)
     {
-        for (int i = 0; i < t; i++)
+        printf("|");
+        for(int i=0;i<root->U_size;i++)
         {
-            printf("\t");
+            printf(" %d -> %d |",i,IsPresent(root,i));
         }
-        printf("Summary: %d ( %d , %d )\n", root->U_size, root->Minimum, root->Maximum);
-        if (root->U_size != 2)
-        {
-            Print_Tree(root->Summary, t + 1);
-        }
-        if (root->U_size != 2)
-        {
-            for (int i = 0; i <= t; i++)
-            {
-                printf("\t");
-            }
-            printf("Cluster: %d\n", root->U_size);
-            int k = ceil(sqrt(root->U_size));
-            for (int i = 0; i < k; i++)
-            {
-                Print_Tree(root->Clusters[i], t + 1);
-            }
-        }
+        printf("\n");
     }
+    else printf("Tree is empty.\n");
 }
 
 // Successor
@@ -229,7 +218,7 @@ int Predecessor(VEB_Node *root, int x)
         {
             int pr_cluster = Predecessor(root->Summary, x/k);
             if (pr_cluster == -1)
-            {   
+            {
                 if(root->Minimum != -1 && x > root->Minimum){
                     return root->Minimum;
                 }
@@ -309,12 +298,20 @@ int main()
     }
     while (1)
     {
-        char ch;
-        printf("Enter A to search an element\nEnter B to find predesessor of element\nEnter C to find successor of element\nEnter D to delete an element\nEnter E to display the tree\nEnter F to get minimum\nEnter G to get maximum\nEnter H to exit\n");
-        scanf(" %c", &ch);
-        if (ch == 'A')
+        int query;
+        printf("Enter 1 to Insert an element\nEnter 2 to search an element\nEnter 3 to find predesessor of element\nEnter 4 to find successor of element\nEnter 5 to delete an element\nEnter 6 to display the tree\nEnter 7 to get minimum\nEnter 8 to get maximum\nEnter 9 to exit\n");
+        scanf("%d", &query);
+        if(query == 1)
         {
             int val;
+            printf("Enter number to insert: ");
+            scanf("%d",&val);
+            Insert(tree,val);
+        }
+        else if (query == 2)
+        {
+            int val;
+            printf("Enter number to search: ");
             scanf("%d", &val);
             if (IsPresent(tree, val))
             {
@@ -325,9 +322,10 @@ int main()
                 printf("Not Present\n");
             }
         }
-        else if (ch == 'B')
+        else if (query == 3)
         {
             int val;
+            printf("Enter number to find the predecessor: ");
             scanf("%d", &val);
             if (Predecessor(tree, val) != -1)
             {
@@ -339,9 +337,10 @@ int main()
                 printf("No predecessor\n");
             }
         }
-        else if (ch == 'C')
+        else if (query == 4)
         {
             int val;
+            printf("Enter number to find the successor: ");
             scanf("%d", &val);
             if (Successor(tree, val) != -1)
             {
@@ -353,20 +352,21 @@ int main()
                 printf("No successor\n");
             }
         }
-        else if (ch == 'D')
+        else if (query == 5)
         {
             int val;
+            printf("Enter number to delete: ");
             scanf("%d", &val);
             tree = Delete_Element(tree, val);
         }
-        else if (ch == 'E')
+        else if (query == 6)
         {
             Print_Tree(tree, 0);
         }
-        else if(ch == 'F'){
+        else if(query == 7){
              printf("Minimum element is %d\n",tree->Minimum);
         }
-        else if(ch == 'G'){
+        else if(query == 8){
             printf("Maximum element is %d\n",tree->Maximum);
         }
         else
