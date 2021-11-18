@@ -11,7 +11,7 @@
     - Delete - You can delete any element from the tree. Time Complexity = O(log(log(M))).
     - Display - It will display all the elements as a binary array which will tell that whether an element is present or absent.
     - Min - Provides the minimum element. Time Complexity = O(1).
-    - Max - Provides the minimum element. Time Complexity = O(1).
+    - Max - Provides the maximum element. Time Complexity = O(1).
 
 An example input and output is shown below:
 ![input_example](input_example.PNG)
